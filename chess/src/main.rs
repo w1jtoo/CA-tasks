@@ -42,7 +42,7 @@ fn main() {
     // stdin.lock().read_line(&mut s).unwrap();
     // let result_position = Square::from_string(&s);
     println!("Read file...");
-    let lines = lines_from_file("input.txt");
+    let lines = lines_from_file("in.txt");
     let start_position = Square::from_string(&lines[0]);
     let result_position = Square::from_string(&lines[1]);
 
@@ -54,7 +54,7 @@ fn main() {
     println!("Found path:");
     println!("{}", result.join(" -> "));
     println!("Writing to file...");
-    fs::write("output.txt", result.join("\n")).expect("Unable to write file");
+    fs::write("out.txt", result.join("\n")).expect("Unable to write file");
     println!("Successfully!");
 }
 
@@ -169,6 +169,7 @@ fn get_neighbours(square: &Square) -> Vec<Square> {
         result.push(Square::new(char_shift(square.raw, -2), square.column + 1))
     }
 
+    result.reverse();
     result
 }
 fn char_shift(raw: char, shift: i8) -> char {
@@ -274,9 +275,9 @@ fn distinct_tests() {
 #[test]
 fn get_neighbours_turn() {
     let pos = Square::new('C', 3);
-    let result = vec![Square::new('B', 5) , Square::new('D', 5) , Square::new('E', 4), 
+    let mut result = vec![Square::new('B', 5) , Square::new('D', 5) , Square::new('E', 4), 
     Square::new('E', 2) , Square::new('D', 1), Square::new('B', 1), 
     Square::new('A', 2), Square::new('A', 4)];
-
+    result.reverse();
     assert_eq!(get_neighbours(&pos), result); 
 }
