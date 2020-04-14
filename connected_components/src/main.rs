@@ -18,11 +18,11 @@ fn main() {
     println!("Reading file \"{}\"...", INPUT_FILE_NAME);
 
     let lines = get_lines_from_file(INPUT_FILE_NAME);
-    let dimension = lines[0].parse::<usize>().expect("Expected that first line will be demension");
-    let matrix_raws: Vec<String> = lines.into_iter().skip(1).take(dimension).collect();
+    let size = lines[0].parse::<usize>().expect("Expected that first line will be demension");
+    let matrix_raws: Vec<String> = lines.into_iter().skip(1).take(size).collect();
     let graph = parse_matrix(&matrix_raws); 
 
-    println!("Recongnized matrix with dimension {}:", dimension);
+    println!("Recongnized matrix with size {}:", size);
     println!("{}", matrix_raws.join("\n"));
 
     println!("Finding connected components...");
