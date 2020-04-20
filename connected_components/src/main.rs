@@ -28,13 +28,17 @@ fn main() {
     println!("Finding connected components...");
     let mut components = get_connected_components(&graph);
     
-    components.sort_by(|a, b| a.iter().min().unwrap().cmp(&b.iter().min().unwrap()));
+    components.sort_by(|a, b| a.iter().min().unwrap().cmp(&b.iter().min().unwrap())); 
+    // sort by max element in component 
+    
+
     let mut r = Vec::new();
     for component in components {
         let mut sorted = component.clone();
-        sorted.sort();
-        let b: Vec<String> = sorted.iter().map(|x| (x + 1).to_string()).collect();
-        r.push(b.join("0"));
+        sorted.sort(); // sort 
+        let mut b: Vec<String> = sorted.iter().map(|x| (x + 1).to_string()).collect();
+        b.push("0".to_string()); // adding zero to line end
+        r.push(b.join(" ")); // concat it to single string 
     }
     
     let result = r.join("\n");
