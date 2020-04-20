@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
-use std::{fs::File, io::BufReader, path::Path};
-use std::io::{BufRead};
 use std::fs;
+use std::io::BufRead;
+use std::{fs::File, io::BufReader, path::Path};
 
 static INPUT_FILE_NAME: &str = "in.txt";
 static OUTPUT_FILE_NAME: &str = "out.txt";
@@ -18,20 +18,21 @@ fn main() {
     println!("Reading file \"{}\"...", INPUT_FILE_NAME);
 
     let lines = get_lines_from_file(INPUT_FILE_NAME);
-    let size = lines[0].parse::<usize>().expect("Expected that first line will be demension");
+    let size = lines[0]
+        .parse::<usize>()
+        .expect("Expected that first line will be demension");
     let matrix_raws: Vec<String> = lines.into_iter().skip(1).take(size).collect();
-    let graph = parse_matrix(&matrix_raws); 
+    let graph = parse_matrix(&matrix_raws);
 
     println!("Recongnized matrix with size {}:", size);
     println!("{}", matrix_raws.join("\n"));
 
     println!("Finding connected components...");
     let mut components = get_connected_components(&graph);
-    
-    components.sort_by(|a, b| a.iter().min().unwrap().cmp(&b.iter().min().unwrap())); 
+    let conmonents_count = components.len();
     // sort by max element in component 
+    components.sort_by(|a, b| a.iter().min().unwrap().cmp(&b.iter().min().unwrap()));
     
-
     let mut r = Vec::new();
     for component in components {
         let mut sorted = component.clone();
@@ -40,16 +41,13 @@ fn main() {
         b.push("0".to_string()); // adding zero to line end
         r.push(b.join(" ")); // concat it to single string 
     }
-    
-    let result = r.join("\n");
-    println!("Found components:");
-    println!("{}", result);
+    let result = format!("{}\n{}", conmonents_count, r.join("\n"));
+    println!("Found {} components:", conmonents_count);
+    println!("{}", r.join("\n"));
 
     println!("Writing to file \"{}\"", OUTPUT_FILE_NAME);
     fs::write("out.txt", result).expect("Unable to write file");
-
 }
-
 
 fn get_neighbours(edges: &Vec<u16>) -> Vec<u16> {
     let mut result = Vec::new();
@@ -104,5 +102,7 @@ fn parse_matrix(lines: &Vec<String>) -> Vec<Vec<u16>> {
 }
 
 fn parse_raw(raw: &String) -> Vec<u16> {
-    raw.split(" ").map(|n| n.trim().parse::<u16>().expect("can't parse line")).collect()
+    raw.split(" ")
+        .map(|n| n.trim().parse::<u16>().expect("can't parse line"))
+        .collect()
 }
